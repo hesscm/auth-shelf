@@ -1,14 +1,25 @@
 
 import { useDispatch } from 'react-redux';
+import useReduxStore from '../../hooks/useReduxStore';
 
 
 function ShelfListItem({ item }) {
-
+    const store = useReduxStore();
     const dispatch = useDispatch();
+    console.log('userID', store.user.id);
 
     const deleteItem = (id) => {
         console.log('in deleteItem! id:', id)
-        dispatch({ type: 'DELETE_ITEM', payload: id }) 
+        if (store.user.id === item.user_id) {
+            dispatch({ type: 'DELETE_ITEM', payload: id })
+        } else {
+            alert('Bad.')
+        }
+
+
+
+
+
     }
     
 
