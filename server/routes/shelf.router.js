@@ -13,7 +13,21 @@ router.get('/', (req, res) => {
  * Add an item for the logged in user to the shelf
  */
 router.post('/', (req, res) => {
-  // endpoint functionality
+  console.log('INCOMING req.body on router:', req.body);
+  const postQuery = 
+  `INSERT INTO "item" 
+  ("description", "image_url", "user_id")
+  VALUES($1, $2, $3);`     //double-check query
+  pool.query(postQuery, [
+    req.body.description,  //matching Sarah's variable?
+    req.body.image_url,    //matching Sarah's variable?
+    req.body.user_id       //matching Sarah's variable?
+  ]).then(result => {
+    res.sendStatus(201);
+  }).catch(error => {
+    console.log('error in shelf.router.js post:', error);
+    res.sendStatus(500);
+  });
 });
 
 /**
