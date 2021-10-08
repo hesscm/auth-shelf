@@ -44,7 +44,11 @@ function* addItem(action) {
 function* deleteItem(action) {
     try {
         console.log('passed in ACTION (id) - id is:', action.payload);
-        yield axios.delete(`/api/shelf/${action.payload}`);
+        yield axios({
+            method: 'DELETE',
+            url: '/api/shelf',
+            data: action.payload
+        });
         yield put({ type: 'FETCH_SHELF' });
     } catch (error) {
         console.log('error in delete in shelf.saga.js:', error)
