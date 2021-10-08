@@ -1,4 +1,4 @@
-import { put, takeEvery} from 'redux-saga/effects';
+import { put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
 
 
@@ -30,7 +30,7 @@ function* addItem(action) {
         const item = action.payload;
         yield axios({
             method: 'POST',
-            url: '/shelf/',
+            url: '/api/shelf',
             data: action.payload
         });
         yield put({ type: 'FETCH_SHELF' });

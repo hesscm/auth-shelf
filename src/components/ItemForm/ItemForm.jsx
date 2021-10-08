@@ -20,7 +20,10 @@ function ItemForm() {
         dispatch({
             type: 'ADD_ITEM', payload: newItem
         });
-        setNewItem('');
+        setNewItem({
+            description: '',
+            image_url: '',
+        });
     }
 
     return (
