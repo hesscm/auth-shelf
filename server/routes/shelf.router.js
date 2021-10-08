@@ -19,9 +19,9 @@ router.post('/', (req, res) => {
   ("description", "image_url", "user_id")
   VALUES($1, $2, $3);`     //double-check query
   pool.query(postQuery, [
-    req.body.description,  //matching Sarah's variable?
-    req.body.image_url,    //matching Sarah's variable?
-    req.body.user_id       //matching Sarah's variable?
+    req.body.description, 
+    req.body.image_url,  
+    req.user.id           //UPDATED
   ]).then(result => {
     res.sendStatus(201);
   }).catch(error => {
