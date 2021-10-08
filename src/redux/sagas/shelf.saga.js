@@ -33,7 +33,7 @@ function* addItem(action) {
             url: '/shelf/',
             data: action.payload
         });
-        yield put({ type: 'SET_SHELF' });
+        yield put({ type: 'FETCH_SHELF' });
     } catch (error) {
         console.log('error in add item - shelf.saga.js:', error);
     }
@@ -45,7 +45,7 @@ function* deleteItem(action) {
     try {
         console.log('passed in ACTION (id) - id is:', action.payload);
         yield axios.delete(`/api/shelf/${action.payload}`);
-        yield put({ type: 'SET_SHELF' });
+        yield put({ type: 'FETCH_SHELF' });
     } catch (error) {
         console.log('error in delete in shelf.saga.js:', error)
     }
