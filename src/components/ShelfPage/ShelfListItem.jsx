@@ -10,11 +10,12 @@ function ShelfListItem({ item }) {
 
     const deleteItem = (id) => {
         console.log('in deleteItem! id:', id)
-        if (store.user.id === item.user_id) {
-            dispatch({ type: 'DELETE_ITEM', payload: id })
-        } else {
-            alert('Bad.')
-        }
+
+        // if (store.user.id === item.user_id) {
+            dispatch({ type: 'DELETE_ITEM', payload: { id: id, user_id: item.user_id } })
+        // } else {
+            // alert('Bad.')
+        // }
 
 
 
