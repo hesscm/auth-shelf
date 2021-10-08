@@ -49,7 +49,7 @@ function* addItem(action) {
             url: '/api/shelf',
             data: action.payload
         });
-        yield put({ type: 'FETCH_SHELF '});
+        yield put({ type: 'FETCH_SHELF'});
     } catch (error) {
         console.log('error in add item - shelf.saga.js:', error);
     }
