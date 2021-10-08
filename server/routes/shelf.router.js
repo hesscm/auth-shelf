@@ -17,6 +17,24 @@ router.get('/', (req, res) => {
   })
 });
 
+
+router.get('/:id', (req, res) => {
+  console.log('user get id', req.params.id);
+  if(req.params.id === req.user.id) {
+  const getQuery = 'SELECT * FROM "item" where "user_id" = $1;'
+  pool.query(getQuery, [req.params.id])
+  .then(result => {
+    console.log(result.rows);
+    res.send(result.rows);
+  }).catch(error => {
+    console.log('error in server GET', error);
+    res.sendStatus(500);
+  })
+} else {
+  res.sendStatus(403)
+}
+})
+
 /**
  * Add an item for the logged in user to the shelf
  */

@@ -3,6 +3,7 @@ import useReduxStore from "../../hooks/useReduxStore";
 import "./ShelfPage.css"
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function ShelfList() {
     const dispatch = useDispatch();
@@ -10,11 +11,17 @@ function ShelfList() {
     const tempArray = [
         { id: 1, description: 'Star Wars', image_url: 'https://m.media-amazon.com/images/M/MV5BMDljNTQ5ODItZmQwMy00M2ExLTljOTQtZTVjNGE2NTg0NGIxXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_FMjpg_UX1000_.jpg'},
         { id: 2, description: 'Star Wars', image_url: 'https://m.media-amazon.com/images/M/MV5BMDljNTQ5ODItZmQwMy00M2ExLTljOTQtZTVjNGE2NTg0NGIxXkEyXkFqcGdeQXVyODkzNTgxMDg@._V1_FMjpg_UX1000_.jpg' },
-
 ];
+
+const history = useHistory();
 
 const fetchList = () => {
     dispatch({type: "FETCH_SHELF"})
+}
+
+const handleClickEvent = () => {
+    dispatch({type: 'GET_USER_SHELF', payload: store.user.id})
+    history.push(`/api/shelf/${store.user.id}`); // ??
 }
 
 
@@ -25,6 +32,8 @@ useEffect(() => {
 
     return (
         <div className="item">
+            <button onClick={handleClickEvent}>My Shelf</button>
+
             {/* {JSON.stringify(store.items.ItemsList)} */}
             <br /> <br />
             {/* {JSON.stringify(tempArray)} */}

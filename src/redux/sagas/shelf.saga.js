@@ -58,6 +58,25 @@ function* deleteItem(action) {
 
 //stop delete function
 
+//generator get function start here
+function* fetchUserShelf(action) {
+    try {
+        const config = {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        }
+        const response = yield axios.get(`/api/shelf/${action.payload}`, config);
+
+        yield put({ type: 'SET_USER_SHELF', payload: response.data });
+
+    } catch (error) {
+        console.log('Shelf get request failed', error);
+    }
+};
+
+//stop function
+
+
 
 //stop function
 
@@ -65,6 +84,7 @@ function* shelfSaga() {
     yield takeEvery('FETCH_SHELF', fetchShelf);
     yield takeEvery('ADD_ITEM', addItem);
     yield takeEvery('DELETE_ITEM', deleteItem);
+    yield takeEvery('GET_USER_SHELF', fetchUserShelf)
 }
 
 export default shelfSaga;

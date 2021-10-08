@@ -8,6 +8,16 @@ const ItemsList = (state = [], action) => {
     }
 };
 
+const UserItemsList = (state = [], action) => {
+    switch (action.type) {
+        case 'SET_USER_SHELF':
+            return action.payload;
+        default:
+            return state;
+    }
+};
+
 export default combineReducers({
     ItemsList,
+    UserItemsList
 }); 

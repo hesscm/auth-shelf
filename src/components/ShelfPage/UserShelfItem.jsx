@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import useReduxStore from '../../hooks/useReduxStore';
 
 
-function ShelfListItem({ item }) {
+function UserShelfItem({ item }) {
     const store = useReduxStore();
     const dispatch = useDispatch();
     console.log('userID', store.user.id);
@@ -16,17 +16,15 @@ function ShelfListItem({ item }) {
             alert('Bad.')
         }
     }
-    
 
-
-    return(
+    return (
         <div>
-        <h3>{item.description}</h3>
-        <img src={item.image_url} alt={item.description} />
+            <h3>{item.description}</h3>
+            <img src={item.image_url} alt={item.description} />
 
-        <button onClick={() => deleteItem(item.id)}>Delete</button>
+            <button onClick={() => deleteItem(item.id)}>Delete</button>
         </div>
     )
 }
 
-export default ShelfListItem;
+export default UserShelfItem;
