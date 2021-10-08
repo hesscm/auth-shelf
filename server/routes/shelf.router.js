@@ -6,7 +6,15 @@ const router = express.Router();
  * Get all of the items on the shelf
  */
 router.get('/', (req, res) => {
-  res.sendStatus(200); // For testing only, can be removed
+  const getQuery = 'SELECT * FROM "item";'
+  pool.query(getQuery)
+  .then(result => {
+    console.log(result.rows);
+    res.send(result.rows);
+  }).catch(error => {
+    console.log('error in server GET', error);
+    res.sendStatus(500);
+  })
 });
 
 /**
@@ -19,9 +27,9 @@ router.post('/', (req, res) => {
   ("description", "image_url", "user_id")
   VALUES($1, $2, $3);`     //double-check query
   pool.query(postQuery, [
-    req.body.description,  //matching Sarah's variable?
-    req.body.image_url,    //matching Sarah's variable?
-    req.body.user_id       //matching Sarah's variable?
+    req.body.description, 
+    req.body.image_url,  
+    req.user.id           //UPDATED
   ]).then(result => {
     res.sendStatus(201);
   }).catch(error => {
