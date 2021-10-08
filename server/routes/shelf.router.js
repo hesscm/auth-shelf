@@ -43,6 +43,15 @@ router.post('/', (req, res) => {
  */
 router.delete('/:id', (req, res) => {
   // endpoint functionality
+  const deleteQuery = `DELETE FROM "item" WHERE "item"."id" = $1;`;
+  pool.query(deleteQuery, [
+    req.user.id
+  ]).then(result => {
+    res.sendStatus(201);
+  }).catch(error => {
+    console.log('error in shelf.router.js delete:', error);
+    res.sendStatus(500);
+  });
 });
 
 /**

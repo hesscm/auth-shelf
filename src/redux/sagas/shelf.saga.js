@@ -18,22 +18,6 @@ function* fetchShelf() {
     } 
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //stop function
 
 
@@ -49,17 +33,34 @@ function* addItem(action) {
             url: '/shelf/',
             data: action.payload
         });
-        yield put({ type: 'FETCH_SHELF '});
+        yield put({ type: 'SET_SHELF' });
     } catch (error) {
         console.log('error in add item - shelf.saga.js:', error);
     }
 }
+
+//generator delete function starts HERE
+
+function* deleteItem(action) {
+    try {
+        console.log('passed in ACTION (id) - id is:', action.payload);
+        yield axios.delete(`/api/shelf/${action.payload}`);
+        yield put({ type: 'SET_SHELF' });
+    } catch (error) {
+        console.log('error in delete in shelf.saga.js:', error)
+    }
+}
+
+
+//stop delete function
+
 
 //stop function
 
 function* shelfSaga() {
     yield takeEvery('FETCH_SHELF', fetchShelf);
     yield takeEvery('ADD_ITEM', addItem);
+    yield takeEvery('DELETE_ITEM', deleteItem);
 }
 
 export default shelfSaga;
