@@ -58,6 +58,28 @@ function* deleteItem(action) {
 
 //stop delete function
 
+//generator get function start here
+function* fetchUserShelf(action) {
+    try {
+        const config = { //think we need this, haven't tested without it
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+        }
+        //server response =    server get   this route   //id from the payload
+        const response = yield axios.get(`/api/shelf/${action.payload.id}`, config);
+        //NEXT STEP: go to shelf.router line 22
+
+        //now we take our results and set it to a reducer. shelf.reducer line 11
+        yield put({ type: 'SET_USER_SHELF', payload: response.data });
+
+    } catch (error) {
+        console.log('Shelf get request failed', error);
+    }
+};
+
+//stop function
+
+
 
 //stop function
 
@@ -65,6 +87,7 @@ function* shelfSaga() {
     yield takeEvery('FETCH_SHELF', fetchShelf);
     yield takeEvery('ADD_ITEM', addItem);
     yield takeEvery('DELETE_ITEM', deleteItem);
+    yield takeEvery('GET_USER_SHELF', fetchUserShelf) //Hi Pod 3. Let's go to the above function.
 }
 
 export default shelfSaga;

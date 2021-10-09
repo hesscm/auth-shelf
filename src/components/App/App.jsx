@@ -19,6 +19,7 @@ import ShelfPage from '../ShelfPage/ShelfPage';
 import LandingPage from '../LandingPage/LandingPage';
 import LoginPage from '../LoginPage/LoginPage';
 import RegisterPage from '../RegisterPage/RegisterPage';
+import UserShelfPage from '../ShelfPage/UserShelfPage'; //this was named wrong originally oops
 
 import './App.css';
 
@@ -63,10 +64,19 @@ function App() {
           <ProtectedRoute
             // logged in shows InfoPage else shows LoginPage
             exact
+            path="/shelf/user/:id"  // I haven't tested without /user, but this works. To UserShelfPage
+          >
+            <UserShelfPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute
+            // logged in shows InfoPage else shows LoginPage
+            exact
             path="/shelf"
           >
             <ShelfPage />
           </ProtectedRoute>
+
 
           <Route
             exact

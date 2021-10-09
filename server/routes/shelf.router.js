@@ -1,4 +1,5 @@
 const express = require('express');
+const { rejectUnauthenticated } = require('../modules/authentication-middleware');
 const pool = require('../modules/pool');
 const router = express.Router();
 
@@ -8,27 +9,48 @@ const router = express.Router();
 router.get('/', (req, res) => {
   const getQuery = 'SELECT * FROM "item";'
   pool.query(getQuery)
-  .then(result => {
-    console.log(result.rows);
-    res.send(result.rows);
-  }).catch(error => {
-    console.log('error in server GET', error);
-    res.sendStatus(500);
-  })
+    .then(result => {
+      console.log(result.rows);
+      res.send(result.rows);
+    }).catch(error => {
+      console.log('error in server GET', error);
+      res.sendStatus(500);
+    })
 });
+
+//get with the user id attached as a param
+router.get('/:id', (req, res) => {
+  console.log('user get id, current user ID', req.params.id + req.user.id);
+  // === did not work here. params was a string and we are comparing to an int
+  if (req.params.id == req.user.id) {
+    console.log('hello');
+    //think this all makes sense here. send the query and return the results. back to shelf.saga line 73
+    const getQuery = 'SELECT * FROM "item" where "user_id" = $1;'
+    pool.query(getQuery, [req.params.id])
+      .then(result => { //you're in!
+        console.log(result.rows);
+        res.send(result.rows);
+      }).catch(error => { //something weird happened
+        console.log('error in server GET', error);
+        res.sendStatus(500);
+      })
+  } else { //you are not authorized
+    res.sendStatus(403)
+  }
+})
 
 /**
  * Add an item for the logged in user to the shelf
  */
 router.post('/', (req, res) => {
   console.log('INCOMING req.body on router:', req.body);
-  const postQuery = 
-  `INSERT INTO "item" 
+  const postQuery =
+    `INSERT INTO "item" 
   ("description", "image_url", "user_id")
   VALUES($1, $2, $3);`     //double-check query
   pool.query(postQuery, [
-    req.body.description, 
-    req.body.image_url,  
+    req.body.description,
+    req.body.image_url,
     req.user.id           //UPDATED
   ]).then(result => {
     res.sendStatus(201);
@@ -41,23 +63,23 @@ router.post('/', (req, res) => {
 /**
  * Delete an item if it's something the logged in user added
  */
-router.delete('/', (req, res) => {
+router.delete('/', rejectUnauthenticated, (req, res) => {
   // endpoint functionality
-
-  if(req.body.user_id === req.user.id) {
   console.log('delete id', req.body);
-  const deleteQuery = `DELETE FROM "item" WHERE "item"."id" = $1;`;
+  const deleteQuery = `Delete FROM "item" WHERE "id" = $1 AND "user_id" = $2;`;
   pool.query(deleteQuery, [req.body.id, req.body.user_id])
-  .then(result => {
-    res.sendStatus(201);
-
-  }).catch(error => {
-    console.log('error in shelf.router.js delete:', error);
-    res.sendStatus(500);
-    
-  });} else {
-    res.sendStatus(403)
-  }
+    .then(result => {
+      if (result.rowCount > 0) {
+        res.send({ message: 'You deleted the secret!' });
+      }
+      else {
+        res.send({ message: 'Nothing was deleted, check with your manager/check your status. You may need clearance.' })
+      }
+    })
+    .catch(error => {
+      console.log('error in shelf.router.js delete:', error);
+      res.sendStatus(500);
+    });
 });
 
 /**
