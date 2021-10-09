@@ -17,8 +17,6 @@ function ShelfListItem({ item }) {
         }
     }
     
-
-
     return(
         <div>
         <h3>{item.description}</h3>

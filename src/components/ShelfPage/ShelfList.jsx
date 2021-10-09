@@ -20,8 +20,8 @@ const fetchList = () => {
 }
 
 const handleClickEvent = () => {
-    dispatch({type: 'GET_USER_SHELF', payload: store.user.id})
-    history.push(`/api/shelf/${store.user.id}`); // ??
+    //go to the client of the current user. To UserShelfPage
+    history.push(`/shelf/user/${store.user.id}`); 
 }
 
 
@@ -32,6 +32,7 @@ useEffect(() => {
 
     return (
         <div className="item">
+            {/* Our params journey begins here... */}
             <button onClick={handleClickEvent}>My Shelf</button>
 
             {/* {JSON.stringify(store.items.ItemsList)} */}

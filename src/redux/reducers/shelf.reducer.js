@@ -7,7 +7,7 @@ const ItemsList = (state = [], action) => {
             return state;
     }
 };
-
+//load the reducer with the user's list(this came from the saga put({type:...})
 const UserItemsList = (state = [], action) => {
     switch (action.type) {
         case 'SET_USER_SHELF':
@@ -19,5 +19,5 @@ const UserItemsList = (state = [], action) => {
 
 export default combineReducers({
     ItemsList,
-    UserItemsList
+    UserItemsList //this is ready to be called in root reducer now. let's go back to UserShelfPage
 }); 
